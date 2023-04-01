@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 5,
-    width: '75%',
+    width: '85%',
     borderColor: '000',
   },
   itemLeft: {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 12,
     fontWeight: 'bold',
+    paddingRight: 7,
   },
 });
 

@@ -17,22 +17,36 @@ export default function Chatbot() {
   const [userInput, setUserInput] = useState();
   const [symptoms, setSymptoms] = useState([]);
   const [prediction, setPrediction] = useState();
+  const [description, setDiscription] = useState();
+  const [treatment1, setTreatment1] = useState();
+  const [treatment2, setTreatment2] = useState();
+  const [treatment3, setTreatment3] = useState();
+  const [treatment4, setTreatment4] = useState();
+  const [error, setError] = useState(false);
 
   const donePressed = async () => {
-    symptoms.map((key, value) => {
-      console.log(key);
+    symptoms.map((value, key) => {
+      console.log(value);
     });
 
     try {
       axios
-        .post('http://127.0.0.1:8000/api/predict_disease/getdisease', {
+        .post('http://192.168.0.106:8000/api/predict_disease/getdisease', {
           symptoms: symptoms,
         })
         .then(response => {
-          console.log(response);
+          console.log(response.data);
+          setPrediction(response.data['Disease']);
+          setDiscription(response.data['Description']);
+          setTreatment1(response.data['Treatment1']);
+          setTreatment2(response.data['Treatment2']);
+          setTreatment3(response.data['Treatment3']);
+          setTreatment4(response.data['Treatment4']);
         })
         .catch(error => {
           console.log(error);
+          setError(true);
+          setSymptoms([]);
         });
     } catch (ex) {
       console.log(ex);
@@ -52,9 +66,23 @@ export default function Chatbot() {
           <View style={styles.items}>
             <BotMessage text="Hello! This is DocBot" />
             <BotMessage text="Please Enter your symptoms here" />
+            <BotMessage text="Click on Done once finished" />
+
             {symptoms.map((item, index) => {
               return <UserMessage key={index} text={item} />;
             })}
+
+            {error ? (
+              <View>
+                <BotMessage
+                  text={
+                    "Sorry we couldn't predict that can you please provide more precise symptoms"
+                  }
+                />
+              </View>
+            ) : (
+              <></>
+            )}
 
             {symptoms[0] ? (
               <TouchableOpacity onPress={donePressed} underlayColor="white">
@@ -62,6 +90,22 @@ export default function Chatbot() {
                   <Text>Done</Text>
                 </View>
               </TouchableOpacity>
+            ) : (
+              <></>
+            )}
+
+            {prediction ? (
+              <View>
+                <BotMessage
+                  text={`We believe you have acquired  ${prediction}`}
+                />
+                <BotMessage text={description} />
+                <BotMessage text="Suggested Treatments are " />
+                <BotMessage text={treatment1} />
+                <BotMessage text={treatment2} />
+                <BotMessage text={treatment3} />
+                <BotMessage text={treatment4} />
+              </View>
             ) : (
               <></>
             )}
@@ -151,6 +195,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 60,
-    marginBottom: 50,
+    marginBottom: 5,
   },
 });

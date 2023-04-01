@@ -1,19 +1,28 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button, Image} from 'react-native';
+import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 
-function Login() {
+function Login({navigation}) {
+  const registerPressed = () => {
+    navigation.navigate('RegisterPage');
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
         <Text style={styles.title}>DocBot</Text>
         <Image style={styles.image} source={require('../assets/chatbot.png')} />
       </View>
-      <View style={styles.button}>
-        <Text>Register</Text>
-      </View>
-      <View style={styles.button}>
-        <Text>Login</Text>
-      </View>
+      <TouchableOpacity style={styles.button} onPress={registerPressed}>
+        <View>
+          <Text>Register</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button}>
+        <View>
+          <Text>Login</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
