@@ -12,8 +12,9 @@ import {
 import BotMessage from './BotMessage';
 import UserMessage from './UserMessage';
 import axios from 'axios';
+import NavigationPanel from './NavigationPanel';
 
-export default function Chatbot() {
+export default function Chatbot({navigation}) {
   const [userInput, setUserInput] = useState();
   const [symptoms, setSymptoms] = useState([]);
   const [prediction, setPrediction] = useState();
@@ -59,80 +60,86 @@ export default function Chatbot() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.messageWrapper}>
-        <Text style={styles.sectionTitle}>Conversation with DocBot</Text>
-        <ScrollView style={styles.scrollarea}>
-          <View style={styles.items}>
-            <BotMessage text="Hello! This is DocBot" />
-            <BotMessage text="Please Enter your symptoms here" />
-            <BotMessage text="Click on Done once finished" />
+    <>
+      <View style={styles.container}>
+        <View style={styles.messageWrapper}>
+          <Text style={styles.sectionTitle}>Conversation with DocBot</Text>
+          <ScrollView style={styles.scrollarea}>
+            <View style={styles.items}>
+              <BotMessage text="Hello! This is DocBot" />
+              <BotMessage text="Please Enter your symptoms here" />
+              <BotMessage text="Click on Done once finished" />
 
-            {symptoms.map((item, index) => {
-              return <UserMessage key={index} text={item} />;
-            })}
+              {symptoms.map((item, index) => {
+                return <UserMessage key={index} text={item} />;
+              })}
 
-            {error ? (
-              <View>
-                <BotMessage
-                  text={
-                    "Sorry we couldn't predict that can you please provide more precise symptoms"
-                  }
-                />
-              </View>
-            ) : (
-              <></>
-            )}
-
-            {symptoms[0] ? (
-              <TouchableOpacity onPress={donePressed} underlayColor="white">
-                <View style={styles.ConfirmButton}>
-                  <Text>Done</Text>
+              {error ? (
+                <View>
+                  <BotMessage
+                    text={
+                      "Sorry we couldn't predict that can you please provide more precise symptoms"
+                    }
+                  />
                 </View>
-              </TouchableOpacity>
-            ) : (
-              <></>
-            )}
+              ) : (
+                <></>
+              )}
 
-            {prediction ? (
-              <View>
-                <BotMessage
-                  text={`We believe you have acquired  ${prediction}`}
-                />
-                <BotMessage text={description} />
-                <BotMessage text="Suggested Treatments are " />
-                <BotMessage text={treatment1} />
-                <BotMessage text={treatment2} />
-                <BotMessage text={treatment3} />
-                <BotMessage text={treatment4} />
-              </View>
-            ) : (
-              <></>
-            )}
-          </View>
-        </ScrollView>
+              {symptoms[0] ? (
+                <TouchableOpacity onPress={donePressed} underlayColor="white">
+                  <View style={styles.ConfirmButton}>
+                    <Text>Done</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <></>
+              )}
+
+              {prediction ? (
+                <View>
+                  <BotMessage
+                    text={`We believe you have acquired  ${prediction}`}
+                  />
+                  <BotMessage text={description} />
+                  <BotMessage text="Suggested Treatments are " />
+                  <BotMessage text={treatment1} />
+                  <BotMessage text={treatment2} />
+                  <BotMessage text={treatment3} />
+                  <BotMessage text={treatment4} />
+                </View>
+              ) : (
+                <></>
+              )}
+            </View>
+          </ScrollView>
+        </View>
+
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.writeTaskWrapper}>
+          <TextInput
+            style={styles.input}
+            placeholder={'Enter your symptoms here'}
+            value={userInput}
+            onChangeText={text => setUserInput(text)}
+          />
+
+          <TouchableOpacity onPress={() => handleAddUserInput()}>
+            <View style={styles.addWrapper}>
+              <Image
+                style={styles.image}
+                source={require('../assets/send_message.png')}
+              />
+            </View>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
       </View>
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.writeTaskWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder={'Enter your symptoms here'}
-          value={userInput}
-          onChangeText={text => setUserInput(text)}
-        />
-
-        <TouchableOpacity onPress={() => handleAddUserInput()}>
-          <View style={styles.addWrapper}>
-            <Image
-              style={styles.image}
-              source={require('../assets/send_message.png')}
-            />
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+      <View>
+        {console.log(prediction)}
+        <NavigationPanel navigation={navigation} prediction={prediction} />
+      </View>
+    </>
   );
 }
 
@@ -143,7 +150,7 @@ const styles = StyleSheet.create({
   },
 
   messageWrapper: {
-    paddingTop: 50,
+    paddingTop: 20,
     paddingHorizontal: 20,
   },
 

@@ -6,6 +6,10 @@ function Login({navigation}) {
     navigation.navigate('RegisterPage');
   };
 
+  const loginPressed = () => {
+    navigation.navigate('LoginPage');
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -18,7 +22,7 @@ function Login({navigation}) {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={loginPressed}>
         <View>
           <Text>Login</Text>
         </View>

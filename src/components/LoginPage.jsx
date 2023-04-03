@@ -7,44 +7,39 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  Keyboard,
 } from 'react-native';
 import axios from 'axios';
 
-function RegisterPage({navigation}) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-
-  const registerPressed = async () => {
-    if (password == confirmPassword) {
-      try {
-        axios
-          .post('http://192.168.0.106:8000/api/user/createuser', {
-            email: email,
-            password: password,
-          })
-          .then(response => {
-            console.log(response.data);
-            if (response.data['SUCCESS'] == 'TRUE') {
-              Alert.alert('Registeration Successfull');
-              setTimeout(() => {
-                navigation.navigate('AllDoctorsPage');
-              }, 4000);
-            } else {
-              Alert.alert('Email already exists');
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            Alert.alert('Email already exists');
-          });
-      } catch (ex) {
-        console.log(ex);
-      }
-    } else {
-      Alert.alert("Confirm Password doesn't match");
+function LoginPage({navigation}) {
+  const submitPressed = async () => {
+    try {
+      axios
+        .get(
+          `http://192.168.0.106:8000/api/user/userexists?email=${email}&password=${password}`,
+        )
+        .then(response => {
+          console.log(response.data);
+          if (response.data['SUCCESS'] == 'TRUE') {
+            Alert.alert('SUCCESS');
+            setTimeout(() => {
+              navigation.navigate('AllDoctorsPage');
+            }, 4000);
+          } else {
+            Alert.alert('Invalid Email/Password');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          Alert.alert('Invalid Email/Password');
+        });
+    } catch (ex) {
+      console.log(ex);
     }
   };
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
   return (
     <View style={styles.root}>
@@ -68,17 +63,9 @@ function RegisterPage({navigation}) {
           value={password}
           secureTextEntry={true}
         />
-        <Text style={styles.text}>Confirm Password</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Confirm Password"
-          onChangeText={setConfirmPassword}
-          value={confirmPassword}
-          secureTextEntry={true}
-        />
-        <TouchableOpacity style={styles.button} onPress={registerPressed}>
+        <TouchableOpacity style={styles.button} onPress={submitPressed}>
           <View>
-            <Text>Register</Text>
+            <Text>Submit</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -145,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterPage;
+export default LoginPage;
