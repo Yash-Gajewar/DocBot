@@ -8,7 +8,7 @@ With DocBot, users can easily and conveniently get an initial diagnosis and find
 # Screenshots
 <img src="https://github.com/Yash-Gajewar/DocBot/assets/65448232/9229c331-e587-4935-89bf-7de0cdd5d86e" width="250" height="400"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/Yash-Gajewar/DocBot/assets/65448232/bbacbbe6-97b4-4aaf-8672-ed1393f1d850" width="250" height="400" />
+<img src="https://github.com/Yash-Gajewar/DocBot/assets/65448232/e8ab97a5-09f3-4d57-9f72-c7eb5d3e0d72" width="250" height="400" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://github.com/Yash-Gajewar/DocBot/assets/65448232/55efdc62-9d53-4fe4-8c71-d3d89e0e03bf" width="250" height="400" />
 
